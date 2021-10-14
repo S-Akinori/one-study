@@ -1,0 +1,25 @@
+.layout {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  background: #FFF;
+}
+
+main {
+  flex: 1;
+  background: #fcfcfc;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  background: #FFF;
+}
