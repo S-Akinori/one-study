@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const tailwindcss = require('tailwindcss');
 
 /*
  |--------------------------------------------------------------------------
@@ -10,9 +11,22 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.webpackConfig({
+  devtool: "source-map",
+  module: {
+    rules: [
+      {
+        test: /\.scss/,
+        loader: 'import-glob-loader'
+      }
+    ]
+  }
+});
 
 mix.ts('resources/ts/app.tsx', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        require("tailwindcss")
-    ])
     .sass('resources/sass/app.scss', 'public/css')
+    .options({
+      processCssUrls: false,
+      postCss: [tailwindcss('./tailwind.config.js')],
+    });
+

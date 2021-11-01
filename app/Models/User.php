@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,8 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
+        'photoURL',
+        'downloadedVideos',
+        'followings',
+        'followers',
+        'postTotal',
         'email',
         'password',
+        'downloadedFiles'
     ];
 
     /**
@@ -29,6 +36,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'email',
+        'email_verified_at',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
         'password',
         'remember_token',
     ];
@@ -40,5 +51,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'downloadedFiles' => 'array'
     ];
+    
+    public function posts() {
+      return $this->hasMany(Post::class);
+    }
 }

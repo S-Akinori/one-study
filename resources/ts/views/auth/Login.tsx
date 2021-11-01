@@ -2,8 +2,9 @@ import React from "react";
 import axios from "axios"
 import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
-import Button from './Button'
-import { Redirect } from "react-router";
+import Button from '../../components/Button'
+import {useAuth} from '../../components/AuthContext'
+import { useHistory } from "react-router";
 
 interface LoginData {
   email: string,
@@ -12,22 +13,26 @@ interface LoginData {
 
 const Login = () => {
   const { register, handleSubmit, setError, formState: { errors } } = useForm();
-
+  const auth = useAuth()
+  const history = useHistory()
   const onSubmit = (data: LoginData) => {
-      axios.get('/sanctum/csrf-cookie').then(response => {
-        axios.post('/api/login', data)
-        .then((res) => {
-          axios.get('/api/user').then(res => {
-            return <Redirect to="/" />
-          })
-        }).catch(error => {
-          console.log(error.message)
-          setError('submit', {
-            type: 'manual',
-            message: 'メールアドレスまたはパスワードが違います。'
-          })
-        })
-      });
+    auth?.signin(data).then(() => {
+      history.push('/')
+    })
+      // axios.get('/sanctum/csrf-cookie').then(response => {
+      //   axios.post('/api/login', data)
+      //   .then((res) => {
+      //     axios.get('/api/user').then(res => {
+      //       history.push('/')
+      //     })
+      //   }).catch(error => {
+      //     console.log(error.message)
+      //     setError('submit', {
+      //       type: 'manual',
+      //       message: 'メールアドレスまたはパスワードが違います。'
+      //     })
+      //   })
+      // });
   }
 
   return (

@@ -1,0 +1,5 @@
+@use '../../global/' as g;
+.p-top-page__download {
+  background: url('#{g.$path}/storage/bubble-sp.png') no-repeat;
+  background-size: cover;
+}

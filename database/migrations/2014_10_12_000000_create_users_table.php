@@ -16,9 +16,15 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('photoURL')->default('http://127.0.0.1:8000/storage/user/no-avatar.png');
             $table->string('password');
+            $table->longText('downloadedFiles')->nullable();
+            $table->unsignedBigInteger('followings')->default(0);
+            $table->unsignedBigInteger('followers')->default(0);
+            $table->unsignedBigInteger('postTotal')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

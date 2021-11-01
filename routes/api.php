@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum', 'verified'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->apiResource('/users', UserController::class);
+Route::apiResource('/posts', PostController::class);
+
+Route::post('/follow/{id}', [FollowerController::class, 'follow']);
+Route::get('/followings/{id}', [FollowerController::class, 'indexOfFollowings']);
+Route::get('/followers/{id}', [FollowerController::class, 'indexOfFollowers']);
+Route::get('/followings/{following_id}/followers/{follower_id}', [FollowerController::class, 'show']);
