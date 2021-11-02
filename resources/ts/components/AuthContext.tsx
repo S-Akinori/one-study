@@ -36,6 +36,7 @@ interface authProps {
   register: (registerData: RegisterData) => Promise<void>
   signin: (loginData: LoginData) => Promise<void>;
   signout: () => Promise<void>;
+  saveProfile: (formData: FormData) => Promise<void>;
 }
 
 const authContext = createContext<authProps | null>(null)
@@ -66,6 +67,11 @@ interface RegisterData {
   email: string,
   password: string,
   password_confirmation: string,
+}
+interface ProfileData {
+  name: string,
+  username: string,
+  avatar: FileList
 }
 
 const useProvideAuth = () => {
@@ -105,6 +111,20 @@ const useProvideAuth = () => {
     })
   }
 
+  const saveProfile = (formData: FormData) => {
+    return axios.get('/sanctum/csrf-cookie').then(() => {
+      axios.post(`/api/users/${(user as User).id}`, 
+        formData, 
+        {headers: { 'content-type': 'multipart/form-data', 'X-HTTP-Method-Override': 'PUT' }}
+      ).then((res) => {
+        setUser(res.data)
+        return res.data
+      }).catch((error) => {
+        return null
+      })
+    })
+  }
+
   useEffect(() => {
     axios.get('/api/user').then((res) => {
       setUser(res.data)
@@ -121,24 +141,10 @@ const useProvideAuth = () => {
     user,
     register,
     signin,
-    signout
+    signout,
+    saveProfile
   }
 }
-
-// export const AuthButton = () => {
-//   const history = useHistory();
-//   const auth = useAuth();
-//   return auth?.user ? (
-//     <p>
-//       Welcome!{" "}
-//       <button onClick={() => {
-//         auth?.signout().then(() => history.push('/'))
-//       }}>Sign out</button>
-//     </p>
-//   ) : (
-//     <p>You are not logged in.</p>
-//   )
-// }
 
 interface RouteProps {
   children: ReactNode,

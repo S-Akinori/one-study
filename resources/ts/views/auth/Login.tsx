@@ -1,12 +1,10 @@
 import React from "react";
 import axios from "axios"
 import { useForm } from "react-hook-form";
-import TwitterLogin from "react-twitter-login";
 import TextField from '@mui/material/TextField';
 import Button from '../../components/Button'
 import {useAuth} from '../../components/AuthContext'
 import { useHistory } from "react-router";
-import FacebookAuth from "../../components/FacebookAuth";
 
 interface LoginData {
   email: string,
@@ -22,15 +20,12 @@ const Login = () => {
       history.push('/')
     })
   }
-  const handleSocialLogin = (user: any) => {
-    console.log(user);
-  }
-  const handleSocialLoginFailure = (err: any) => {
-    console.error(err);
-  };
 
-  const responseTwitter = (response : any) => {
-    console.log(response)
+  const socialLogin = () => {
+    axios('/api/login/facebook').then((res) => {
+      console.log(res);
+      window.location.href = res.data.redirect_url;
+    })
   }
 
   return (
@@ -66,11 +61,7 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <TwitterLogin
-        authCallback={responseTwitter}
-        consumerKey={process.env.REACT_APP_TWITTER_CLIENT_ID as string}
-        consumerSecret={process.env.REACT_APP_TWITTER_CLIENT_SECRET as string}
-      />
+      <button onClick={socialLogin}>facebook</button>
     </div>
   )
 }

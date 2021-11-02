@@ -44,22 +44,11 @@ const Settings = () => {
       setLoading(false);
     } else {
       const formData = new FormData((document.getElementById('profileForm') as HTMLFormElement))
-      axios.get('/sanctum/csrf-cookie').then(() => {
-        axios.post(`/api/users/${(auth?.user as User).id}`, 
-          formData, 
-          {headers: { 'content-type': 'multipart/form-data', 'X-HTTP-Method-Override': 'PUT' }}
-        ).then((res) => {
-          console.log(res.data)
-          setLoading(false);
-        }).catch((error) => {
-          console.log(error.response)
-          setError('submit', {
-            type: 'manual',
-            message: 'エラーが発生しました',
-          })
-          setLoading(false);
-        })
-      })
+      auth?.saveProfile(formData).then(() => {
+        setLoading(false);
+      }).catch(() => {
+        setLoading(false);
+      });
     }
   }
 
