@@ -68,10 +68,8 @@ const Login = () => {
       </form>
       <TwitterLogin
         authCallback={responseTwitter}
-        // consumerKey={process.env.REACT_APP_TWITTER_CLIENT_ID as string}
-        // consumerSecret={process.env.REACT_APP_TWITTER_CLIENT_SECRET as string}
-        consumerKey="yDpbMiSIBucp4SEzQa5U3xzQX"
-        consumerSecret="pUJEAtxnB9DuX1IHtnwpZW1KGralO0NjRbhKiC2sKyAI9dPVNo"
+        consumerKey={process.env.REACT_APP_TWITTER_CLIENT_ID as string}
+        consumerSecret={process.env.REACT_APP_TWITTER_CLIENT_SECRET as string}
       />
     </div>
   )
