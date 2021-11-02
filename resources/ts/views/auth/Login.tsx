@@ -21,8 +21,9 @@ const Login = () => {
     })
   }
 
-  const socialLogin = (e: MouseEvent) => {
+  const socialLogin = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const provider = (e.target as HTMLButtonElement).value
+    console.log(provider)
     if(provider == 'facebook' || provider == 'twitter') {
       axios.get(`/api/login/${provider}`).then((res) => {
         console.log(res);
@@ -64,8 +65,8 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <button onClick={(e) => socialLogin} value="facebook">facebook</button>
-      <button onClick={(e) => socialLogin} value="twitter">twitter</button>
+      <button onClick={(e) => socialLogin(e)} value="facebook">facebook</button>
+      <button onClick={(e) => socialLogin(e)} value="twitter">twitter</button>
     </div>
   )
 }
