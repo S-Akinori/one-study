@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios"
 import { useForm } from "react-hook-form";
+import FacebookLogin from 'react-facebook-login';
 import TextField from '@mui/material/TextField';
 import Button from '../../components/Button'
 import {useAuth} from '../../components/AuthContext'
@@ -19,23 +20,9 @@ const Login = () => {
     auth?.signin(data).then(() => {
       history.push('/')
     })
-      // axios.get('/sanctum/csrf-cookie').then(response => {
-      //   axios.post('/api/login', data)
-      //   .then((res) => {
-      //     axios.get('/api/user').then(res => {
-      //       history.push('/')
-      //     })
-      //   }).catch(error => {
-      //     console.log(error.message)
-      //     setError('submit', {
-      //       type: 'manual',
-      //       message: 'メールアドレスまたはパスワードが違います。'
-      //     })
-      //   })
-      // });
   }
-  const socialite = () => {
-    axios.get('/api/facebook/callback')
+  const responseFacebook = (response : any) => {
+    console.log(response)
   }
 
   return (
@@ -71,7 +58,12 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <a href="/login/facebook">facebook</a>
+      <FacebookLogin
+        appId="420291672866619"
+        autoLoad={true}
+        fields="name,email,picture"
+        callback={responseFacebook}
+      />
     </div>
   )
 }
