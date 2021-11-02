@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\OAuthController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/login/{provider}', [OAuthController::class, 'getProviderOAuthURL']);
+// Route::post('/login/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
+Route::get('/login/{provider}/callback', function($provider) {
+  $user = Socialite::driver($provider)->user();
+  dd($user);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->apiResource('/users', UserController::class);

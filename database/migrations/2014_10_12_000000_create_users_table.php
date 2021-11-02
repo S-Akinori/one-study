@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('photoURL')->default('https://one-study.xyz/storage/user/no-avatar.png');
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->longText('downloadedFiles')->nullable();
             $table->unsignedBigInteger('followings')->default(0);
             $table->unsignedBigInteger('followers')->default(0);

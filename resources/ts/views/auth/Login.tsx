@@ -34,6 +34,9 @@ const Login = () => {
       //   })
       // });
   }
+  const socialite = () => {
+    axios.get('/api/facebook/callback')
+  }
 
   return (
     <div className="p-4 max-w-screen-sm mx-auto">
@@ -68,6 +71,7 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
+      <a href="/login/facebook">facebook</a>
     </div>
   )
 }
