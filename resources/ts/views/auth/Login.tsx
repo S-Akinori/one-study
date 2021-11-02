@@ -21,7 +21,7 @@ const Login = () => {
     })
   }
 
-  const socialLogin = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const socialLogin = (e: React.MouseEvent<HTMLElement>) => {
     const provider = (e.target as HTMLButtonElement).value
     console.log(provider)
     if(provider == 'facebook' || provider == 'twitter') {
@@ -65,8 +65,8 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <button onClick={(e) => socialLogin(e)} value="facebook">facebook</button>
-      <button onClick={(e) => socialLogin(e)} value="twitter">twitter</button>
+      <button onClick={socialLogin} value="facebook">facebook</button>
+      <button onClick={socialLogin} value="twitter">twitter</button>
     </div>
   )
 }
