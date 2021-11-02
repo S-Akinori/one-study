@@ -16,6 +16,7 @@ import SendVerificationMail from './views/auth/SendVerificationMail'
 import Settings from './views/user/Settings'
 import Following from './views/user/Following'
 import Follower from './views/user/Followers'
+import Callback from './views/auth/Callback'
  
 const App = () => {
     // const [isAuth, setIsAuth] = useState(false)
@@ -44,6 +45,7 @@ const App = () => {
                 <PrivateRoute path="/user/settings" exact><Settings /></PrivateRoute>
                 <Route path="/user/:id/following" component={Following} />
                 <Route path="/user/:id/follower" component={Follower} />
+                <Route path="/login/:provider/callback" component={Callback} />
               </Layout>
             </Switch>
           </div>

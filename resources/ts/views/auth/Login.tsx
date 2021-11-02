@@ -64,8 +64,8 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <button onClick={socialLogin} value="facebook">facebook</button>
-      <button onClick={socialLogin} value="twitter">twitter</button>
+      <button onClick={(e) => socialLogin} value="facebook">facebook</button>
+      <button onClick={(e) => socialLogin} value="twitter">twitter</button>
     </div>
   )
 }
