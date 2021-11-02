@@ -21,11 +21,14 @@ const Login = () => {
     })
   }
 
-  const socialLogin = () => {
-    axios('/api/login/facebook').then((res) => {
-      console.log(res);
-      window.location.href = res.data.redirect_url;
-    })
+  const socialLogin = (e: MouseEvent) => {
+    const provider = (e.target as HTMLButtonElement).value
+    if(provider == 'facebook' || provider == 'twitter') {
+      axios.get(`/api/login/${provider}`).then((res) => {
+        console.log(res);
+        window.location.href = res.data.redirect_url;
+      })
+    }
   }
 
   return (
@@ -61,7 +64,8 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <button onClick={socialLogin}>facebook</button>
+      <button onClick={socialLogin} value="facebook">facebook</button>
+      <button onClick={socialLogin} value="twitter">twitter</button>
     </div>
   )
 }
