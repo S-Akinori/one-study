@@ -3,9 +3,8 @@ import React from "react";
 import { useLocation } from "react-router";
 
 const Callback = () => {
-  const search = useLocation().search;
-  console.log(search)
-  axios.get('/api/login/twitter/callback').then((res) => {
+  const token = useLocation().search;
+  axios.get(`/api/login/twitter/callback${token}`).then((res) => {
     console.log(res.data);
   })
 
