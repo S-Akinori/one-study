@@ -26,7 +26,7 @@ class OAuthController extends Controller
       if($identity_provider) { //login
         Auth::loginUsingId($identity_provider->user_id);
       } else { //create identity provider
-        $user = User::where('email', $provider_user->getEmail())->get();
+        $user = User::where('email', $provider_user->getEmail())->first();
         
         if(!$user) {
           $user = User::create([
