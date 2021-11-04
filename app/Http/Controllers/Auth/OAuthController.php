@@ -21,6 +21,12 @@ class OAuthController extends Controller
 
     public function handleProviderCallback(string $provider) {
       $user = Socialite::driver($provider)->user();
-      return $user;
+      return [
+        'id' => $user->getId(),
+        'name' => $user->getName(),
+        'email' => $user->getEmail(),
+        'nickname' => $user->getNickname(),
+        'avatar' => $user->getAvatar(),
+      ];
     }
 }
