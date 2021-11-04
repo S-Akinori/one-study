@@ -9,7 +9,7 @@ class IdentityProvider extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['provider_name', 'provider_user_id'];
+    protected $fillable = ['user_id', 'provider_name', 'provider_user_id'];
 
     public function user() {
       return $this->belongsTo(User::class);

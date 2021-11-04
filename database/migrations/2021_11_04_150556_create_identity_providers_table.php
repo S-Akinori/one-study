@@ -15,10 +15,12 @@ class CreateIdentityProvidersTable extends Migration
     {
         Schema::create('identity_providers', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->string('provider_name');
             $table->string('provider_user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

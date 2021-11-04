@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\IdentityProvider;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +20,7 @@ class OAuthController extends Controller
     }
 
     public function handleProviderCallback(string $provider) {
-      try {
-        $providerUser = Socialite::driver($provider)->user();
-      } catch (\Exception $e) {
-        abort(500, $e->getMessage());
-      }
-      $authUser = User::socialFindOrCreate($providerUser, $provider);
-      Auth::login($authUser, true);
-
-      return $authUser;
+      $user = Socialite::driver($provider)->user();
+      return $user;
     }
 }
