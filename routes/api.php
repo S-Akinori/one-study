@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/user', function (Request 
 
 Route::get('/login/{provider}', [OAuthController::class, 'getProviderOAuthURL']);
 // Route::post('/login/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
-Route::get('/login/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
+Route::post('/login/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::middleware(['auth:sanctum', 'verified'])->apiResource('/users', UserController::class);
 Route::apiResource('/posts', PostController::class);

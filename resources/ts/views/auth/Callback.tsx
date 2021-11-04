@@ -6,6 +6,7 @@ const Callback = () => {
   const token = useLocation().search;
   axios.get(`/api/login/twitter/callback${token}`).then((res) => {
     console.log(res.data);
+    
   })
 
   return (

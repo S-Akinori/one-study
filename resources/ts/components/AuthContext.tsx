@@ -35,6 +35,7 @@ interface authProps {
   user: User | 'unauthorized' | 'unverified';
   register: (registerData: RegisterData) => Promise<void>
   signin: (loginData: LoginData) => Promise<void>;
+  signinWithProvider: (token: string) => Promise<void>;
   signout: () => Promise<void>;
   saveProfile: (formData: FormData) => Promise<void>;
 }
@@ -102,6 +103,16 @@ const useProvideAuth = () => {
     })
   }
 
+  const signinWithProvider = (token: string) => {
+    return axios.get('/samctum/csrf-cookie').then(() => {
+      axios.post(`/api/login/twitter/callback${token}`, {}).then(() => {
+        axios.get('/api/user').then((res) => {
+          setUser(res.data);
+        })
+      })
+    })
+  }
+
   const signout = () => {
     return axios.get('/sanctum/csrf-cookie').then(() => {
       axios.post('/api/logout', {}).then(() => {
@@ -141,6 +152,7 @@ const useProvideAuth = () => {
     user,
     register,
     signin,
+    signinWithProvider,
     signout,
     saveProfile
   }
