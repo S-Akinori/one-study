@@ -44,6 +44,8 @@ class OAuthController extends Controller
           'provider_name' => $provider,
           'provider_user_id' => $provider_user->getId(),
         ]);
+
+        Auth::loginUsingId($user->id);
       }
       return true;
     }
