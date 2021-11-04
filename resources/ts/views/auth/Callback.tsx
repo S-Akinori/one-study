@@ -1,12 +1,14 @@
 import axios from "axios";
 import React from "react";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
+import { useAuth } from "../../components/AuthContext";
 
 const Callback = () => {
   const token = useLocation().search;
-  axios.get(`/api/login/twitter/callback${token}`).then((res) => {
-    console.log(res.data);
-    
+  const auth = useAuth();
+  const history = useHistory();
+  auth?.signinWithProvider(token).then(() => {
+    history.push('/posts');
   })
 
   return (
