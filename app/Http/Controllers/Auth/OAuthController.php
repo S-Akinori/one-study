@@ -22,7 +22,7 @@ class OAuthController extends Controller
 
     public function handleProviderCallback(string $provider) {
       $provider_user = Socialite::driver($provider)->user();
-      $identity_provider = IdentityProvider::where('provider_user_id', $provider_user->getId())->get();
+      $identity_provider = IdentityProvider::where('provider_user_id', $provider_user->getId())->first();
       if($identity_provider) { //login
         Auth::loginUsingId($identity_provider->user_id);
       } else { //create identity provider
