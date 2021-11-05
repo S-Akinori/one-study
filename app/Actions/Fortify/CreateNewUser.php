@@ -20,57 +20,28 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        if($input['provider'] == 'email') {
-          Validator::make($input, [
-              'name' => ['string', 'max:255'],
-              'email' => [
-                  'required',
-                  'string',
-                  'email',
-                  'max:255',
-                  Rule::unique(User::class),
-              ],
-              'password' => $this->passwordRules(),
-          ])->validate();
-        } else if($input['provider'] == 'facebook' || $input['provider'] == 'twitter') {
-          Validator::make($input, [
+        Validator::make($input, [
             'name' => ['string', 'max:255'],
             'email' => [
+                'required',
                 'string',
                 'email',
                 'max:255',
                 Rule::unique(User::class),
             ],
-          ])->validate();
+            'password' => $this->passwordRules(),
+        ])->validate();
+
+        $name = 'user_';
+        for($i = 0 ; $i < 6 ; $i++) {
+          $name .= rand(0,9);
         }
 
-        $name = '';
-        if($input['name']) {
-          $name = $input['name'];
-        } else if($input['nickname']) {
-          $name = $input['nickname'];
-        }
-
-        $username = $input['nickname'];
-
-        if(!$name || $username) {
-          $default_name = 'user_';
-          for($i = 0 ; $i < 6 ; $i++) {
-            $default_name .= rand(0,9);
-          }
-          if(!$name) {
-            $name = $default_name;
-          }
-          if(!$username) {
-            $username = $default_name;
-          }
-        }
-  
         return User::create([
           'name' => $name,
-          'username' => $input['nickname'] ? $input['nickname'] : $name,
+          'username' => $name,
           'email' => $input['email'],
-          'password' => $input['password'] ? Hash::make($input['password']) : null,
+          'password' => Hash::make($input['password']),
         ]);
     }
 }

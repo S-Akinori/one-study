@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory, useLocation } from "react-router";
 import { useAuth } from "../../components/AuthContext";
 
@@ -12,7 +13,9 @@ const Callback = () => {
   })
 
   return (
-    <p>認証中...</p>
+    <div className="p-4">
+      <p>認証中...<CircularProgress/></p>
+    </div>
   )
 }
 

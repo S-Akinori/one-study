@@ -79,46 +79,41 @@ const useProvideAuth = () => {
   const [user, setUser] = useState<User | 'unauthorized' |'unverified'>('unauthorized');
 
   const register = (registerData: RegisterData) => {
-    return axios.get('/sanctum/csrf-cookie').then(() => {
-      axios.post('/api/register', registerData).then((res) => {
-        setUser('unverified')
-      })
+    return axios.post('/api/register', registerData).then((res) => {
+      setUser('unverified')
     })
   }
 
-  const signin = (loginData: LoginData) => {
-    return axios.get('/sanctum/csrf-cookie').then(() => {
-      axios.post('/api/login', loginData).then(() => {
-        axios.get('/api/user').then((res) => {
-          setUser(res.data)
-          return res.data
-        })
-      }).catch((error) => {
-        if(error.response.status == 401) {
-          setUser('unauthorized')
-        } else if(error.response.status == 403) {
-          setUser('unverified')
-        }
-      })
+  const signin = async (loginData: LoginData) => {
+    try {
+      const res = await axios.post('/api/login', loginData);
+    } catch (error) {
+      console.log('error: ', error)
+      throw error;
+    }
+
+    return axios.get('/api/user').then((res) => {
+      setUser(res.data)
+    }).catch((error) => {
+      if(error.response.status == 401) {
+        setUser('unauthorized')
+      } else if(error.response.status == 403) {
+        setUser('unverified')
+      }
     })
   }
 
   const signinWithProvider = (token: string) => {
-    return axios.get('/samctum/csrf-cookie').then(() => {
-      axios.post(`/api/login/twitter/callback${token}`, {}).then(() => {
-        axios.get('/api/user').then((res) => {
-          setUser(res.data);
-        })
+    return axios.post(`/api/login/twitter/callback${token}`, {}).then(() => {
+      axios.get('/api/user').then((res) => {
+        setUser(res.data);
       })
     })
   }
 
   const signout = () => {
-    return axios.get('/sanctum/csrf-cookie').then(() => {
-      axios.post('/api/logout', {}).then(() => {
-        setUser('unauthorized')
-        return null
-      })
+    return axios.post('/api/logout', {}).then(() => {
+      setUser('unauthorized')
     })
   }
 
@@ -208,7 +203,7 @@ export const PublicRoute = ({children, path, exact = false}: RouteProps) => {
         } else if (auth?.user === 'unverified') {
           return <Redirect to={{pathname: "/send-verification-mail", state: { from: location }}} />
         } else {
-          return <Redirect to={{pathname: (history.location.state as From).from.pathname, state: { from: location }}}/>
+          return <Redirect to={{pathname: (history.location.state as From) ? (history.location.state as From).from.pathname : '/' , state: { from: location }}}/>
         }
       }}
     />
