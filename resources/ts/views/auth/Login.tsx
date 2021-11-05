@@ -35,12 +35,19 @@ const Login = () => {
 
   const socialLogin = (e: React.MouseEvent<HTMLElement>) => {
     setLoading(true)
+    clearErrors()
     const provider = (e.target as HTMLButtonElement).value
     console.log(provider)
     if(provider == 'facebook' || provider == 'twitter') {
       axios.get(`/api/login/${provider}`).then((res) => {
         console.log(res);
         window.location.href = res.data.redirect_url;
+      })
+    } else {
+      setLoading(false)
+      setError('provider', {
+        type: 'manual',
+        message: 'エラーが発生しました。再度ログインしてください'
       })
     }
   }
@@ -78,7 +85,8 @@ const Login = () => {
           {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
         </div>
       </form>
-      <LoadingButton loading={loading} onClick={socialLogin} variant="contained" disabled={loading}><TwitterIcon/> Twitterでログイン</LoadingButton>
+      <LoadingButton loading={loading} onClick={socialLogin} variant="contained" value="twitter"><TwitterIcon/> Twitterでログイン</LoadingButton>
+      {errors.provider && <span className="block text-red-400">{errors.provider.message}</span>}
     </div>
   )
 }
