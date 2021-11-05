@@ -1,1 +1,1 @@
-## One-Study ~勉強の1ページを共有するSNS~
+## One-Study : 勉強の1ページを共有するSNS
