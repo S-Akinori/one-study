@@ -1,6 +1,6 @@
-$env: 'local';
+$env: 'production';
 
-$path: 'http://127.0.0.1:8000';
-@if $env == 'production' {
-  $path: 'https://example.com';
+$path: 'https://one-study.xyz';
+@if $env == 'local' {
+  $path: 'http://127.0.0.1:8000';
 }
