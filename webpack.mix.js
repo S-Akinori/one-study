@@ -24,6 +24,7 @@ mix.webpackConfig({
 });
 
 mix.ts('resources/ts/app.tsx', 'public/js')
+    .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .options({
       processCssUrls: false,

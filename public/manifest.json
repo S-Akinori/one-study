@@ -1,0 +1,27 @@
+{
+  "short_name": "1Study",
+  "name": "One Study",
+  "icons": [
+    {
+      "src": "/storage/logo-icon-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/storage/logo-icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/storage/logo-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFF",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#00BFFF",
+  "description": "Share your one page"
+}
