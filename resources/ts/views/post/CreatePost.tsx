@@ -28,9 +28,7 @@ const CreatePost = () => {
   const user = auth?.user;
   
   const tags: Array<Tags> = [
-    {value: 'テスト1', ids: [1]},
-    {value: 'テスト2', ids: [1, 2]},
-    {value: 'テスト3', ids: [1, 2, 3]},
+    {value: 'タグ', ids: [1]},
   ]
   const categories = ['数学', '物理', '化学', '英語']
 
@@ -106,6 +104,8 @@ const CreatePost = () => {
         </div>
         <div className="py-4">
           <TextField 
+            multiline
+            rows="3"
             fullWidth
             type="content" 
             variant="outlined" 
@@ -139,28 +139,6 @@ const CreatePost = () => {
           </div>
         </div>
         <div className="py-4">
-            <Autocomplete 
-              multiple
-              options={tags.map((option) => option.value)}
-              freeSolo
-              onChange={onChange}
-              renderTags={(value: string[], getTagProps) => 
-                value.map((option: string, index: number) => (
-                  <Chip variant="outlined" label={option} {...getTagProps({index})} />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField 
-                  {...params} 
-                  variant="filled" 
-                  label="タグ"
-                  {...register('tags')}
-                />
-              )}
-            />
-            {errors.tags && <span className="block mt-2 text-xs text-red-600">{errors.tags.message}</span>}
-        </div>
-        <div className="py-4">
           <Autocomplete
             disablePortal
             fullWidth
@@ -169,9 +147,35 @@ const CreatePost = () => {
             onInputChange={(event, newInputValue) => {
               setCategoryValue(newInputValue)
             }}
-            blurOnSelect="touch"
             renderInput={(params) => <TextField {...params} label="カテゴリー" />}
           />
+        </div>
+        <div className="py-4">
+            <Autocomplete 
+              multiple
+              options={tags.map((option) => option.value)}
+              freeSolo
+              onChange={onChange}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  return false
+                }
+              }}
+              renderTags={(value: string[], getTagProps) => 
+                value.map((option: string, index: number) => (
+                  <Chip variant="outlined" label={option} {...getTagProps({index})} />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params} 
+                  variant="filled" 
+                  label="タグ"
+                  {...register('tags')}
+                />
+              )}
+            />
+            {errors.tags && <span className="block mt-2 text-xs text-red-600">{errors.tags.message}</span>}
         </div>
         <div className="text-right">
           <LoadingButton 
