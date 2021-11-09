@@ -144,6 +144,11 @@ const CreatePost = () => {
               options={tags.map((option) => option.value)}
               freeSolo
               onChange={onChange}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  return false
+                }
+              }}
               renderTags={(value: string[], getTagProps) => 
                 value.map((option: string, index: number) => (
                   <Chip variant="outlined" label={option} {...getTagProps({index})} />
