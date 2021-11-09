@@ -169,6 +169,7 @@ const CreatePost = () => {
             onInputChange={(event, newInputValue) => {
               setCategoryValue(newInputValue)
             }}
+            blurOnSelect="touch"
             renderInput={(params) => <TextField {...params} label="カテゴリー" />}
           />
         </div>
