@@ -1,0 +1,33 @@
+@use '../../global/' as g;
+.c-balloon {
+  display: inline-block;
+  position: relative;
+  padding: 0.5rem 1.5rem;
+  border: 1.5px solid #adff2f;
+  border-radius: 100vh;
+  transform: translate(0);
+  background: #fff;
+  transition: 300ms;
+}
+
+.c-balloon::before, .c-balloon::after {
+  content: ''; 
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+}
+
+.c-balloon::before {
+  bottom: calc(-1rem - 5px);
+  border-top: 10px solid #adff2f;
+}
+
+.c-balloon::after {
+  bottom: calc(-1rem - 3px);
+  border-top: 10px solid #fff;
+}
+
+.c-balloon:hover {
+  transform: translate(0, 5px);
+}

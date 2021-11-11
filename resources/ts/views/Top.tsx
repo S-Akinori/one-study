@@ -13,6 +13,9 @@ const Top = () => {
         <div className="w-2/3 max-w-sm mx-auto">
           <img src="/storage/app_mobile.png" width="580" height="1150" alt="One Study" />
         </div>
+        <div className="text-center pt-4 pb-2">
+          <span className="c-balloon">今だけ無料！！</span>
+        </div>
         <div className="text-center py-4">
           <Link to="/register">
             <Button variant="contained">今すぐ始める</Button>
@@ -91,6 +94,9 @@ const Top = () => {
       </section>
       <section className="py-16 px-4 p-top-page__download">
         <p className="text-2xl text-center">わたしたちの1ページを共有しよう</p>
+        <div className="text-center pt-4 pb-2">
+          <span className="c-balloon">今だけ無料！！</span>
+        </div>
         <div className="text-center py-4">
         <Link to="/register">
           <Button variant="contained">Web版で始める</Button>
