@@ -17,6 +17,7 @@ import Settings from './views/user/Settings'
 import Following from './views/user/Following'
 import Follower from './views/user/Followers'
 import Callback from './views/auth/Callback'
+import Privacy from './views/Privacy'
  
 const App = () => {
     // const [isAuth, setIsAuth] = useState(false)
@@ -34,6 +35,7 @@ const App = () => {
             <Switch>
               <Layout>
                 <Route path="/" exact component={Top} />
+                <Route path="/privacy" exact component={Privacy} />
                 <Route path="/send-verification-mail" exact><SendVerificationMail /></Route>
                 <PublicRoute path="/register" exact><Register /></PublicRoute>
                 <PublicRoute path="/login" exact><Login /></PublicRoute>
