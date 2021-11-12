@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../components/AuthContext";
 import { useForm } from "react-hook-form";
 import { TextField, Button, Input, Chip, Autocomplete} from "@mui/material";
 import {LoadingButton} from "@mui/lab"
 import axios from "axios";
 import { useHistory } from "react-router";
+import {Tag} from "../../interface/Tag"
 
 interface postData {
   title: string,
@@ -13,35 +14,43 @@ interface postData {
   tags?: string[]
   category: string
 }
-interface Tags {
-  value: string,
-  ids: number[]
-}
 
 const CreatePost = () => {
   const { register, handleSubmit, setError, clearErrors, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false)
-  const [tagValue, setTagValue] = useState('')
+  const [tagValues, setTagValues] = useState<string[]>([])
   const [categoryValue, setCategoryValue] = useState('英語')
+  const [tags, setTags] = useState<Tag[]>([]);
   const auth = useAuth()
   const history = useHistory();
   const user = auth?.user;
-  
-  const tags: Array<Tags> = [
-    {value: 'タグ', ids: [1]},
-  ]
   const categories = ['数学', '物理', '化学', '英語']
+  
 
   const create = (postData: postData) => {
     setLoading(true)
     clearErrors('submit')
+    if(tagValues.length > 3) { //validation : tags should have less than 3 values in an array
+      setError('tags', {
+        type: 'manual',
+        message: '最大で3つです'
+      })
+      setLoading(false)
+      return;
+    }
     const formData = new FormData((document.getElementById('file') as HTMLFormElement))
-    formData.set('tags', tagValue)
+    formData.set('tags', JSON.stringify(tagValues));
     formData.set('category', categoryValue)
     axios.get('/sanctum/csrf-cookie').then(() => {
       axios.post('/api/posts', formData, {headers: { 'content-type': 'multipart/form-data' }}).then((res) => {
         console.log(res.data)
-        history.push('/posts')
+        axios.post('/api/tags', {
+          'tags': tagValues,
+          'post_id': res.data.id,
+        }).then((res) => {
+          console.log(res.data);
+          // history.push('/posts')
+        })
       }).catch((error) => {
         console.log(error.response)
         setError('submit', {
@@ -81,8 +90,15 @@ const CreatePost = () => {
     } else {
       clearErrors("tags")
     }
-    setTagValue(value.join(','))
+    setTagValues(value)
   }
+
+  useEffect(() => {
+    axios.get('/api/tags').then((res) => {
+      setTags(res.data);
+    })
+  }, [])
+
   return (
     <div className="p-4">
       <h1>あなたの1ページをシェアしましょう</h1>
@@ -153,7 +169,7 @@ const CreatePost = () => {
         <div className="py-4">
             <Autocomplete 
               multiple
-              options={tags.map((option) => option.value)}
+              options={tags.map((option) => option.name)}
               freeSolo
               onChange={onChange}
               onKeyDown={(event) => {

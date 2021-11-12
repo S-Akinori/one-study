@@ -4,6 +4,7 @@ import {CircularProgress, Card, CardHeader} from '@mui/material';
 import {Link} from "react-router-dom";
 import {Post} from "../../interface/Post";
 import {User} from "../../interface/User";
+import {Tag} from "../../interface/Tag"
 import {PostData} from "../../interface/PostData";
 import { Drawer, Button, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio, Chip, TextField, Autocomplete } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
@@ -37,9 +38,9 @@ const IndexPost = () => {
   const [currentTags, setCurrentTags] = useState<string[]>([]);
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
+  const [tags, setTags] = useState<Tag[]>([])
   let timer: NodeJS.Timeout | null = null
 
-  const tags = ['テスト1', 'テスト2', 'テスト3'];
   const categories = ['数学', '物理', '化学', '英語'];
 
   const toggleDrawer = (open: boolean) => {
@@ -72,6 +73,13 @@ const IndexPost = () => {
     const categoryQuery = category ? `category=${category}&` : ''
     const tagsQuery = (currentTags.length > 0) ? `tags=${currentTags.join(',')}&` : '';
     const conditionQuery = condition ? `${condition}=true` : '';
+
+    if(tags.length == 0) {
+      axios.get('/api/tags').then((res) => {
+        setTags(res.data);
+      })
+    }
+
     if(condition) {
       axios.get(`/api/posts?${keywordQuery + categoryQuery + tagsQuery + conditionQuery}`).then((res) => {
         setPosts(res.data)
@@ -108,7 +116,7 @@ const IndexPost = () => {
           </FormControl>
           <Autocomplete 
             multiple
-            options={tags.map((option) => option)}
+            options={tags.map((option) => option.name)}
             freeSolo
             onChange={handleTagValues}
             renderTags={(value: string[], getTagProps) => 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\OAuthController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +35,6 @@ Route::post('/follow/{id}', [FollowerController::class, 'follow']);
 Route::get('/followings/{id}', [FollowerController::class, 'indexOfFollowings']);
 Route::get('/followers/{id}', [FollowerController::class, 'indexOfFollowers']);
 Route::get('/followings/{following_id}/followers/{follower_id}', [FollowerController::class, 'show']);
+
+Route::get('/tags', [TagController::class, 'index']);
+Route::post('/tags', [TagController::class, 'store']);

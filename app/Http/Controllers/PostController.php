@@ -42,11 +42,7 @@ class PostController extends Controller
         $path = $request->file('file')->store('public/files');
         $path = str_replace('public', '/storage', $path);
         $fileURL = url('') . $path;
-        if($request->tags) {
-          $tags = explode(',', $request->tags);
-        } else {
-          $tags = null;
-        }
+        $tags = json_decode($request->tags) ? json_decode($request->tags, true) : $request->tags;
         $post = Post::create([
           'user_id' => Auth::user()->id,
           'title' => $request->title,
