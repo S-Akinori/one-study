@@ -20,6 +20,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (data: EmailAndPasswordData) => {
+    setLoading(true)
     auth?.register(data).then(() => {
         history.push({
           pathname: '/send-verification-mail',
@@ -31,6 +32,7 @@ const Register = () => {
         type: 'manual',
         message: '登録に失敗しました。再度登録をしてください'
       })
+      setLoading(false)
     })
   }
 

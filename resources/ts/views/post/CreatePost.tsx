@@ -49,7 +49,7 @@ const CreatePost = () => {
           'post_id': res.data.id,
         }).then((res) => {
           console.log(res.data);
-          // history.push('/posts')
+          history.push('/posts')
         })
       }).catch((error) => {
         console.log(error.response)
