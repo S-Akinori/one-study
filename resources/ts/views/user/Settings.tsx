@@ -15,6 +15,10 @@ interface ProfileData {
   username: string,
   avatar: FileList
 }
+interface EmailData {
+  current_email : string
+  new_email : string
+}
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
@@ -52,6 +56,18 @@ const Settings = () => {
         setLoading(false);
       });
     }
+  }
+
+  const saveEmail = (emailData: EmailData) => {
+    clearErrors('submit');
+    setLoading(true)
+    const formData = new FormData();
+    formData.append('email', emailData.new_email)
+    auth?.saveProfile(formData).then(() => {
+      setLoading(false);
+    }).catch(() => {
+      setLoading(false);
+    });
   }
 
   const validateImageFile = (image: File) => {
@@ -113,7 +129,7 @@ const Settings = () => {
             <div>
               <div className="c-input-group--flex flex py-4">
                 <span className="flex-shrink-0">名前</span>
-                <div className="pl-4">
+                <div className="pl-4 w-full">
                   <TextField
                     {...register('name', {
                       required: '入力してください',
@@ -122,6 +138,7 @@ const Settings = () => {
                         message: '40文字以内で入力してください'
                       }
                     })}
+                    fullWidth
                     defaultValue={(auth?.user as User).name}
                     variant="standard"
                   />
@@ -130,7 +147,7 @@ const Settings = () => {
               </div>
               <div className="c-input-group--flex flex py-4">
                 <span className="flex-shrink-0">ユーザー名</span>
-                <div className="pl-4">
+                <div className="pl-4 w-full">
                   <TextField
                     {...register('username', {
                       required: '入力してください',
@@ -139,6 +156,7 @@ const Settings = () => {
                         message: '英数字で入力してください'
                       }
                     })}
+                    fullWidth
                     defaultValue={(auth?.user as User).username}
                     variant="standard"
                   />
@@ -163,6 +181,65 @@ const Settings = () => {
                     <Button variant="contained" component="span">Upload</Button>
                   </label>
                   {errors.avatar && <span className="c-error">{errors.avatar.message}</span>}
+                </div>
+              </div>
+            </div>
+            <LoadingButton
+              type="submit"
+              loading={loading}
+              variant="contained"
+            >
+              保存
+            </LoadingButton>
+            {errors.submit && <span className="c-error">{errors.submit.message}</span>}
+          </form>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="updateEmail"
+          id="updateEmail"
+        >
+          メールアドレス
+        </AccordionSummary>
+        <AccordionDetails>
+          <form id="updateEmail" onSubmit={handleSubmit(saveEmail)}>
+            <div>
+              {/* <div className="c-input-group--flex flex py-4">
+                <span className="flex-shrink-0">現在のメールアドレス</span>
+                <div className="pl-4 w-full">
+                  <TextField
+                    {...register('current_email', {
+                      required: '入力してください',
+                      maxLength: {
+                        value: 40,
+                        message: '40文字以内で入力してください'
+                      }
+                    })}
+                    fullWidth
+                    defaultValue={(auth?.user as User).email}
+                    variant="standard"
+                    disabled
+                  />
+                  {errors.current_email && <span className="c-error">{errors.current_email.message}</span>}
+                </div>
+              </div> */}
+              <div className="c-input-group--flex flex py-4">
+                <span className="flex-shrink-0">新しいメールアドレス</span>
+                <div className="pl-4 w-full">
+                  <TextField
+                    {...register('new_email', {
+                      required: '入力してください',
+                      pattern: {
+                        value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        message: '有効なメールアドレスを入力してください'
+                      }
+                    })}
+                    fullWidth
+                    variant="standard"
+                  />
+                  {errors.new_email && <span className="c-error">{errors.new_email.message}</span>}
                 </div>
               </div>
             </div>

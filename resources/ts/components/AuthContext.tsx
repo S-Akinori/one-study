@@ -37,7 +37,7 @@ interface authProps {
   signin: (loginData: LoginData) => Promise<void>;
   signinWithProvider: (token: string) => Promise<void>;
   signout: () => Promise<void>;
-  saveProfile: (formData: FormData) => Promise<void>;
+  saveProfile: (formData: FormData | ProfileData) => Promise<void>;
 }
 
 const authContext = createContext<authProps | null>(null)
@@ -70,9 +70,10 @@ interface RegisterData {
   password_confirmation: string,
 }
 interface ProfileData {
-  name: string,
-  username: string,
-  avatar: FileList
+  name?: string,
+  username?: string,
+  avatar?: FileList
+  email?: string
 }
 
 const useProvideAuth = () => {
@@ -117,11 +118,11 @@ const useProvideAuth = () => {
     })
   }
 
-  const saveProfile = (formData: FormData) => {
+  const saveProfile = (formData: FormData | ProfileData) => {
     return axios.get('/sanctum/csrf-cookie').then(() => {
       axios.post(`/api/users/${(user as User).id}`, 
         formData, 
-        {headers: { 'content-type': 'multipart/form-data', 'X-HTTP-Method-Override': 'PUT' }}
+        {headers: {'content-type': 'multipart/form-data', 'X-HTTP-Method-Override': 'PUT'}}
       ).then((res) => {
         setUser(res.data)
         return res.data
