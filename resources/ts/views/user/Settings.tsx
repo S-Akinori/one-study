@@ -5,6 +5,7 @@ import { LoadingButton } from "@mui/lab";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../components/AuthContext";
+import UpdatePasswordForm from "../../components/UpdatePasswordForm";
 import {User} from "../../interface/User"
 import axios from "axios";
 import {red} from "@mui/material/colors"
@@ -19,9 +20,15 @@ interface EmailData {
   current_email : string
   new_email : string
 }
+interface PasswordData {
+  current_password: string,
+  new_password: string,
+  new_password_confirmation: string
+}
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
+  const [buttonText, setButtonText] = useState('保存');
   const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
   const {register, handleSubmit, setError, clearErrors, formState: {errors}} = useForm();
   const auth = useAuth();
@@ -52,6 +59,10 @@ const Settings = () => {
       const formData = new FormData((document.getElementById('profileForm') as HTMLFormElement))
       auth?.saveProfile(formData).then(() => {
         setLoading(false);
+        setButtonText('保存しました')
+        setTimeout(() => {
+          setButtonText('保存')
+        }, 300)
       }).catch(() => {
         setLoading(false);
       });
@@ -65,9 +76,21 @@ const Settings = () => {
     formData.append('email', emailData.new_email)
     auth?.saveProfile(formData).then(() => {
       setLoading(false);
+      setButtonText('保存しました')
+        setTimeout(() => {
+          setButtonText('保存')
+        }, 300)
     }).catch(() => {
       setLoading(false);
     });
+  }
+
+  const updatePassword = async (passwordData: PasswordData) => {
+    setLoading(true);
+    console.log(passwordData);
+    await axios.get('/sanctum/csrf-cookie');
+    const isPasswordConfirmed = await axios.post('/api/user/confirm-password', passwordData.current_password);
+    console.log(isPasswordConfirmed);
   }
 
   const validateImageFile = (image: File) => {
@@ -125,7 +148,7 @@ const Settings = () => {
           ユーザー設定
         </AccordionSummary>
         <AccordionDetails>
-          <form id="profileForm" onSubmit={handleSubmit(saveProfile)}>
+          <form key="profileForm" id="profileForm" onSubmit={handleSubmit(saveProfile)}>
             <div>
               <div className="c-input-group--flex flex py-4">
                 <span className="flex-shrink-0">名前</span>
@@ -189,7 +212,7 @@ const Settings = () => {
               loading={loading}
               variant="contained"
             >
-              保存
+              {buttonText}
             </LoadingButton>
             {errors.submit && <span className="c-error">{errors.submit.message}</span>}
           </form>
@@ -204,7 +227,7 @@ const Settings = () => {
           メールアドレス
         </AccordionSummary>
         <AccordionDetails>
-          <form id="updateEmail" onSubmit={handleSubmit(saveEmail)}>
+          <form key="updateEmail" id="updateEmail" onSubmit={handleSubmit(saveEmail)}>
             <div>
               {/* <div className="c-input-group--flex flex py-4">
                 <span className="flex-shrink-0">現在のメールアドレス</span>
@@ -248,10 +271,22 @@ const Settings = () => {
               loading={loading}
               variant="contained"
             >
-              保存
+              {buttonText}
             </LoadingButton>
             {errors.submit && <span className="c-error">{errors.submit.message}</span>}
           </form>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="updatePassword"
+          id="updatePassword"
+        >
+          パスワード変更
+        </AccordionSummary>
+        <AccordionDetails>
+          <UpdatePasswordForm />
         </AccordionDetails>
       </Accordion>
       <Accordion>
