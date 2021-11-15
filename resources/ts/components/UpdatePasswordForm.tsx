@@ -26,7 +26,6 @@ const UpdatePasswordForm = () => {
     },
     {headers: {'X-HTTP-Method-Override': 'PUT'}}
     ).catch((error) => {
-      console.log(error.response)
       setLoading(false);
       setError('current_password', {
         type: 'incorrect',

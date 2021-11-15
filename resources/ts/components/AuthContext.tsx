@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React, {useContext, createContext, useState, ReactNode, useEffect} from "react"
 import {Route, Redirect, useHistory, useLocation} from "react-router-dom"
 
@@ -37,7 +37,7 @@ interface authProps {
   signin: (loginData: LoginData) => Promise<void>;
   signinWithProvider: (token: string) => Promise<void>;
   signout: () => Promise<void>;
-  saveProfile: (formData: FormData | ProfileData) => Promise<void>;
+  saveProfile: (formData: FormData | ProfileData) => Promise<AxiosResponse<any>>;
 }
 
 const authContext = createContext<authProps | null>(null)
@@ -118,18 +118,17 @@ const useProvideAuth = () => {
     })
   }
 
-  const saveProfile = (formData: FormData | ProfileData) => {
-    return axios.get('/sanctum/csrf-cookie').then(() => {
-      axios.post(`/api/users/${(user as User).id}`, 
-        formData, 
-        {headers: {'content-type': 'multipart/form-data', 'X-HTTP-Method-Override': 'PUT'}}
-      ).then((res) => {
-        setUser(res.data)
-        return res.data
-      }).catch((error) => {
-        return null
-      })
+  const saveProfile = async (formData: FormData | ProfileData) => {
+    const res = await axios.post(
+      '/api/user/profile-information', 
+      formData, 
+      {headers: {'content-type': 'multipart/form-data', 'X-HTTP-Method-Override': 'PUT'}}
+    )
+    .catch((error) => {
+      throw error;
     })
+    console.log(res)
+    return res;
   }
 
   useEffect(() => {
@@ -142,7 +141,7 @@ const useProvideAuth = () => {
         setUser('unverified')
       }
     })
-  }, [])
+  }, [saveProfile])
 
   return {
     user,
