@@ -2,12 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react";
 import {CircularProgress, Card, CardHeader} from '@mui/material';
 import {Link} from "react-router-dom";
-import {Post} from "../../interface/Post";
-import {User} from "../../interface/User";
 import {Tag} from "../../interface/Tag"
 import {PostData} from "../../interface/PostData";
 import { Drawer, Button, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio, Chip, TextField, Autocomplete } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import CreatePostLink from "../../components/CreatePostLink";
 
 const useMediaQuery = (width: number) => {
   const [targetReached, setTargetReached] = useState(false);
@@ -49,7 +48,6 @@ const IndexPost = () => {
 
   const handleConditionValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCondition(event.target.value)
-    console.log(event.target.value)
   }
 
   const handleTagValues = (event: React.ChangeEvent<{}>, values: string[]) => {
@@ -92,7 +90,7 @@ const IndexPost = () => {
   }, [condition, keyword, category, currentTags])
 
   return (
-    <div className="p-4">
+    <div className="p-4 relative">
       {!posts && <CircularProgress />}
       {posts && 
       <div>
@@ -149,7 +147,9 @@ const IndexPost = () => {
             )}
           />
         </Drawer>
-        <Button variant="contained" onClick={() => toggleDrawer(true)} className="md:hidden">検索</Button>
+        <div className="pb-4">
+          <Button variant="contained" onClick={() => toggleDrawer(true)} className="md:hidden">検索</Button>
+        </div>
         <div className="md:w-4/5 md:pl-4 ml-auto grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {posts.map((postData, index) => (
           <div key={postData.post.id} className="c-card bg-white shadow rounded">
@@ -160,10 +160,10 @@ const IndexPost = () => {
             </div>
             <div className="c-card__body">
               <Link to={`posts/id/${postData.post.id}`}>
-                <h2 className="text-2xl font-bold">{postData.post.title}</h2>
+                <h2 className="text-xl font-bold p-2">{postData.post.title}</h2>
               </Link>
             </div>
-            <div className="c-card__footer pt-2 mt-2 border-t">
+            <div className="c-card__footer border-t">
               <div className="flex items-center">
                 <Link to={`users/${postData.user.id}`}>
                   <img src={postData.user.photoURL} alt="" className="avatar" />
@@ -180,6 +180,7 @@ const IndexPost = () => {
         </div>
       </div>
       }
+      <CreatePostLink />
     </div>
   )
 }

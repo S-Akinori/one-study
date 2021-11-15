@@ -3,10 +3,11 @@ import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {saveAs} from "file-saver";
 import {CircularProgress} from "@mui/material";
-import UserLabel from "../../components/UserLabel";
 import {LoadingButton} from "@mui/lab"
 import DownloadIcon from '@mui/icons-material/Download';
 import { useAuth } from "../../components/AuthContext";
+import UserLabel from "../../components/UserLabel";
+import CreatePostLink from "../../components/CreatePostLink";
 import {User} from "../../interface/User"
 
 interface DynamicProps {
@@ -76,7 +77,7 @@ const ShowPost = () => {
   }
   
   return (
-    <div className="p-4">
+    <div className="p-4 relative">
       {loading && <CircularProgress />}
       {!loading && !postdata && <p>エラーが起こりました。</p>}
       {!loading && postdata && 
@@ -106,6 +107,7 @@ const ShowPost = () => {
         </div>
       </div>
       }
+      <CreatePostLink />
     </div>
   )
 }

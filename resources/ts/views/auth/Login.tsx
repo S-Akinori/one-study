@@ -23,7 +23,7 @@ const Login = () => {
     setLoading(true)
     axios.get('/sanctum/csrf-cookie').then(() => {
       auth?.signin(data).then((res) => {
-        history.push('/')
+        history.push('/posts')
       }).catch(() => {
         setError('submit', {
           type: 'manual',
