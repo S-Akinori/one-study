@@ -18,6 +18,8 @@ import Following from './views/user/Following'
 import Follower from './views/user/Followers'
 import Callback from './views/auth/Callback'
 import Privacy from './views/Privacy'
+import ForgotPassword from './views/auth/ForgotPassword'
+import ResetPassword from './views/auth/ResetPassword'
  
 const App = () => {
     // const [isAuth, setIsAuth] = useState(false)
@@ -37,6 +39,8 @@ const App = () => {
                 <Route path="/" exact component={Top} />
                 <Route path="/privacy" exact component={Privacy} />
                 <Route path="/send-verification-mail" exact><SendVerificationMail /></Route>
+                <Route path="/reset-password/:token" exact><ResetPassword /></Route>
+                <Route path="/forgot-password" exact><ForgotPassword /></Route>
                 <PublicRoute path="/register" exact><Register /></PublicRoute>
                 <PublicRoute path="/login" exact><Login /></PublicRoute>
                 <Route path="/posts" exact component={IndexPost} />

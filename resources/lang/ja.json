@@ -31,5 +31,8 @@
 
   "Click button below and reset password.":"下のボタンをクリックしてパスワードを再設定してください。",
   "Reset password":"パスワードリセット",
-  "If you did not request a password reset, no further action is required.":"心当たりがない場合は、本メッセージは破棄してください。"
+  "If you did not request a password reset, no further action is required.":"心当たりがない場合は、本メッセージは破棄してください。",
+
+  "You are receiving this email because we received a password reset request for your account.": "パスワード再設定用のメールです。",
+  "This password reset link will expire in 60 minutes.": "パスワード再設定用のリンクの期限は60分です。"
 }

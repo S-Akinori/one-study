@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { Accordion, AccordionSummary, AccordionDetails, TextField, Button, Modal, Backdrop, Fade, Typography } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Button, Modal, Backdrop, Fade, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useForm } from "react-hook-form";
 import { useAuth } from "../../components/AuthContext";
 import UpdateProfileForm from "../../components/UpdateProfileForm";
 import UpdatePasswordForm from "../../components/UpdatePasswordForm";
@@ -14,9 +13,7 @@ import { Box } from "@mui/system";
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
-  const [buttonText, setButtonText] = useState('保存');
   const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
-  const {register, handleSubmit, setError, clearErrors, formState: {errors}} = useForm();
   const auth = useAuth();
   const history = useHistory();
 

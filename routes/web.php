@@ -23,6 +23,11 @@ use Laravel\Socialite\Facades\Socialite;
 //   return $user;
 // });
 
+Route::get('/reset-password/{token}', function () { 
+  return view('app');
+})->name('password.reset');
+
+
 Route::get('/{any}', function() {
   return view('app');
 })->where('any', '.*');
