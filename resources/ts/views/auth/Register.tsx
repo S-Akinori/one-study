@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios"
 import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
@@ -50,8 +51,9 @@ const Register = () => {
 
   return (
     <div className="p-4 max-w-screen-sm mx-auto">
-        <h1 className="text-center text-xl font-bold">登録</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="text-center text-xl font-bold">アカウント作成</h1>
+        <p className="text-center"><Link to="/login" className="text-sm">アカウントを持っている方はこちら</Link></p>
+        <form className="py-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="py-4">
             <TextField 
               fullWidth
@@ -95,12 +97,14 @@ const Register = () => {
             />
             {errors.password_confirmation && <span className="block text-red-400">{errors.password_confirmation.message}</span>}
           </div>
-          <div className="text-right">
-          <LoadingButton type="submit" loading={loading} variant="contained">送信</LoadingButton>
+          <div>
+            <LoadingButton type="submit" loading={loading} variant="contained" fullWidth>アカウントを作成する</LoadingButton>
             {errors.submit && <span className="block text-red-400">{errors.submit.message}</span>}
           </div>
         </form>
-        <LoadingButton loading={loading} onClick={socialLogin} variant="contained"><TwitterIcon/> Twitterでログイン</LoadingButton>
+        <div className="text-center py-4">
+          <LoadingButton loading={loading} onClick={socialLogin} variant="contained"><TwitterIcon/> Twitterでログイン</LoadingButton>
+        </div>
     </div>
   )
 }

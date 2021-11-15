@@ -11,7 +11,7 @@ const Navbar = () => {
       <ul className="flex">
         {auth?.user === 'unauthorized' ? 
         <>
-          <li className="px-4"><Link to="/login">ログイン</Link></li>
+          <li className="px-4"><Link to="/login" className="text-black">ログイン</Link></li>
         </>
         :
         <>
