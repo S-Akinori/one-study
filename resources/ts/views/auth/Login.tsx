@@ -56,7 +56,7 @@ const Login = () => {
   return (
     <div className="p-4 max-w-screen-sm mx-auto">
       <h1 className="text-center text-xl font-bold pb-4">ログイン</h1>
-      <p className="text-center"><Link to="/register" className="text-sm">アカウントを持っていない方はこちら</Link></p>
+      <p className="text-center"><Link to="/register" className="text-sm c-link">アカウントを持っていない方はこちら</Link></p>
       <form className="py-4" onSubmit={e => {clearErrors(); handleSubmit(onSubmit)(e)}}>
         <div className="py-4">
           <TextField 
@@ -90,7 +90,7 @@ const Login = () => {
         </div>
       </form>
       <div className="py-4 text-center">
-        <Link to="/forgot-password">パスワードを忘れた方はコチラ</Link>
+        <Link to="/forgot-password" className="c-link">パスワードを忘れた方はコチラ</Link>
       </div>
       <div className="text-center py-4">
         <LoadingButton loading={loading} onClick={socialLogin} variant="contained" value="twitter"><TwitterIcon/> Twitterでログイン</LoadingButton>

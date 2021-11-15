@@ -52,7 +52,7 @@ const Register = () => {
   return (
     <div className="p-4 max-w-screen-sm mx-auto">
         <h1 className="text-center text-xl font-bold">アカウント作成</h1>
-        <p className="text-center"><Link to="/login" className="text-sm">アカウントを持っている方はこちら</Link></p>
+        <p className="text-center"><Link to="/login" className="text-sm c-link">アカウントを持っている方はこちら</Link></p>
         <form className="py-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="py-4">
             <TextField 
