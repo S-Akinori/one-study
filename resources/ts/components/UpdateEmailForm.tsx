@@ -65,9 +65,8 @@ const UpdateEmailForm = () => {
             {errors.current_email && <span className="c-error">{errors.current_email.message}</span>}
           </div>
         </div> */}
-        <div className="c-input-group--flex flex py-4">
-          <span className="flex-shrink-0">新しいメールアドレス</span>
-          <div className="pl-4 w-full">
+        <div className="py-4">
+          <div className="w-full">
             <TextField
               {...register('new_email', {
                 required: '入力してください',
@@ -77,7 +76,8 @@ const UpdateEmailForm = () => {
                 }
               })}
               fullWidth
-              variant="standard"
+              variant="outlined"
+              label="新しいメールアドレス"
             />
             {errors.new_email && <span className="c-error">{errors.new_email.message}</span>}
           </div>

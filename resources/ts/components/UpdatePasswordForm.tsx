@@ -51,9 +51,8 @@ const UpdatePasswordForm = () => {
   return (
     <form key="updatePassword" id="updatePassword" onSubmit={handleSubmit(updatePassword)}>
       <div>
-        <div className="c-input-group--flex flex py-4">
-          <span className="flex-shrink-0">現在のパスワードを入力してください</span>
-          <div className="pl-4 w-full">
+        <div className="py-4">
+          <div className="w-full">
             <TextField
               {...register('current_password', {
                 required: '入力してください',
@@ -64,14 +63,14 @@ const UpdatePasswordForm = () => {
               })}
               type="password"
               fullWidth
-              variant="standard"
+              variant="outlined"
+              label="現在のパスワード"
             />
             {errors.current_password && <span className="c-error">{errors.current_password.message}</span>}
           </div>
         </div>
-        <div className="c-input-group--flex flex py-4">
-          <span className="flex-shrink-0">新しいパスワード</span>
-          <div className="pl-4 w-full">
+        <div className="py-4">
+          <div className="w-full">
             <TextField
             id="new_password"
               {...register('new_password', {
@@ -83,14 +82,14 @@ const UpdatePasswordForm = () => {
               })}
               type="password"
               fullWidth
-              variant="standard"
+              variant="outlined"
+              label="新しいパスワード"
             />
             {errors.new_password && <span className="c-error">{errors.new_password.message}</span>}
           </div>
         </div>
-        <div className="c-input-group--flex flex py-4">
-          <span className="flex-shrink-0">パスワード確認</span>
-          <div className="pl-4 w-full">
+        <div className="py-4">
+          <div className="w-full">
             <TextField
               {...register('new_password_confirmation', {
                 required: '入力してください',
@@ -100,7 +99,8 @@ const UpdatePasswordForm = () => {
               })}
               type="password"
               fullWidth
-              variant="standard"
+              variant="outlined"
+              label="パスワード確認"
             />
             {errors.new_password_confirmation && <span className="c-error">{errors.new_password_confirmation.message}</span>}
           </div>

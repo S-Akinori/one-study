@@ -81,9 +81,8 @@ const UpdateProfileForm = () => {
   return (
     <form key="profileForm" id="profileForm" onSubmit={handleSubmit(updateProfile)}>
       <div>
-        <div className="c-input-group--flex flex py-4">
-          <span className="flex-shrink-0">名前</span>
-          <div className="pl-4 w-full">
+        <div className="py-4">
+          <div className="w-full">
             <TextField
               {...register('name', {
                 required: '入力してください',
@@ -94,14 +93,14 @@ const UpdateProfileForm = () => {
               })}
               fullWidth
               defaultValue={(auth?.user as User).name}
-              variant="standard"
+              variant="outlined"
+              label="名前"
             />
             {errors.name && <span className="c-error">{errors.name.message}</span>}
           </div>
         </div>
-        <div className="c-input-group--flex flex py-4">
-          <span className="flex-shrink-0">ユーザー名</span>
-          <div className="pl-4 w-full">
+        <div className="py-4">
+          <div className="w-full">
             <TextField
               {...register('username', {
                 required: '入力してください',
@@ -116,17 +115,14 @@ const UpdateProfileForm = () => {
               })}
               fullWidth
               defaultValue={(auth?.user as User).username}
-              variant="standard"
+              variant="outlined"
+              label="ユーザー名"
             />
             {errors.username && <span className="c-error">{errors.username.message}</span>}
           </div>
         </div>
-        <div className="c-input-group--flex flex py-4">
-          <div className="flex-shrink-0">
-            <span className="flex-shrink-0">プロフィール画像</span>
-            <img id="preview" src={(auth?.user as User).photoURL} className="avatar" />
-          </div>
-          <div className="pl-4">
+        <div className="flex py-4">
+          <div>
             <label htmlFor="avatar">
               <input 
                 className="hidden"
@@ -136,9 +132,12 @@ const UpdateProfileForm = () => {
                 {...register('avatar')}
                 onChange={(e) => setPreviewPhoto(e)}
               />
-              <Button variant="contained" component="span">Upload</Button>
+              <Button variant="contained" component="span">プロフィール画像</Button>
             </label>
             {errors.avatar && <span className="c-error">{errors.avatar.message}</span>}
+          </div>
+          <div className="flex-shrink-0 pl-4">
+            <img id="preview" src={(auth?.user as User).photoURL} className="avatar" />
           </div>
         </div>
       </div>

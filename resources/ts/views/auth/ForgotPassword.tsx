@@ -37,7 +37,7 @@ const ForgotPassword = () => {
       <h1>パスワード再設定リクエスト</h1>
       <form id="forgotPassword" className="pb-4" onSubmit={handleSubmit(forgotPassword)}>
         <div className="c-input-group--flex flex py-4">
-          <div className="pl-4 w-full">
+          <div className="w-full">
             <TextField
               {...register('email', {
                 required: '入力してください',
