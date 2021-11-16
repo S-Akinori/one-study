@@ -20,6 +20,7 @@ import Callback from './views/auth/Callback'
 import Privacy from './views/Privacy'
 import ForgotPassword from './views/auth/ForgotPassword'
 import ResetPassword from './views/auth/ResetPassword'
+import CreateComment from './views/comment/CreateComment'
  
 const App = () => {
     // const [isAuth, setIsAuth] = useState(false)
@@ -46,6 +47,7 @@ const App = () => {
                 <Route path="/posts" exact component={IndexPost} />
                 <PrivateRoute path="/posts/create" exact><CreatePost /></PrivateRoute>
                 <Route path="/posts/id/:id" exact component={ShowPost} />
+                <PrivateRoute path="/comments/create/:postId" exact><CreateComment /></PrivateRoute>
                 <PrivateRoute path="/user" exact><User /></PrivateRoute>
                 <PrivateRoute path="/users/:id" exact><User /></PrivateRoute>
                 <PrivateRoute path="/user/settings" exact><Settings /></PrivateRoute>

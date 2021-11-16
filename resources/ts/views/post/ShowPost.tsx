@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import {saveAs} from "file-saver";
 import {CircularProgress} from "@mui/material";
 import {LoadingButton} from "@mui/lab"
@@ -27,9 +27,19 @@ interface Post {
   updated_at: string
 }
 
+interface Comment {
+  id: number,
+  user_id: number,
+  post_id: number,
+  content: string,
+  created_at: string
+  updated_at: string
+}
+
 interface PostData {
   post: Post
   user: User
+  comments: Comment[]
 }
 
 const ShowPost = () => {
@@ -83,7 +93,7 @@ const ShowPost = () => {
       {!loading && postdata && 
       <div className="p-post">
         <div className="p-post__header">
-          <h1 className="p-post__header__title text-2xl font-bold">{postdata.post.title}</h1>
+          <h1 className="p-post__header__title py-4 text-xl font-bold">{postdata.post.title}</h1>
           <div className="p-post__header__img">
             <img src={postdata.post.fileURL} alt="" onContextMenu={(e) => {e.preventDefault(); return false}} />
           </div>
@@ -95,7 +105,7 @@ const ShowPost = () => {
         <div className="p-post__body py-4">
           {postdata.post.content}
         </div>
-        <div className="p-post__footer">
+        <div className="p-post__footer py-4">
           <ul className="p-post__footer__tags flex">
             {postdata.post.tags && postdata.post.tags.map((tag, index) => (
               <li key={index} className="px-2 py-1 mx-2 bg-gray-200 rounded-full">{tag}</li>
@@ -103,6 +113,16 @@ const ShowPost = () => {
           </ul>
           <div className="p-post__footer__user py-4">
             <UserLabel user={postdata.user} />
+          </div>
+          <div className="p-post__footer__comments py-4">
+            <h2 className="py-4 text-xl font-bold">コメント</h2>
+            <Link to={`/comments/create/${id}`}>コメントする</Link>
+            {postdata.comments.length > 0 && postdata.comments.map((comment, index) => (
+              <div key={comment.id} className="py-4 border-b-2">
+                <UserLabel id={comment.user_id} avatarSize="sm" />
+                <p className="">{comment.content}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

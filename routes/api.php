@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\OAuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -30,6 +31,7 @@ Route::post('/login/{provider}/callback', [OAuthController::class, 'handleProvid
 
 Route::middleware(['auth:sanctum', 'verified'])->apiResource('/users', UserController::class);
 Route::apiResource('/posts', PostController::class);
+Route::apiResource('/comments', CommentController::class);
 
 Route::post('/follow/{id}', [FollowerController::class, 'follow']);
 Route::get('/followings/{id}', [FollowerController::class, 'indexOfFollowings']);

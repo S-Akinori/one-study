@@ -37,7 +37,7 @@ interface authProps {
   signin: (loginData: LoginData) => Promise<void>;
   signinWithProvider: (token: string) => Promise<void>;
   signout: () => Promise<void>;
-  saveProfile: (formData: FormData | ProfileData) => Promise<AxiosResponse<any>>;
+  saveProfile: (formData: FormData | ProfileData) => Promise<void | AxiosResponse<any>>;
 }
 
 const authContext = createContext<authProps | null>(null)
@@ -127,7 +127,17 @@ const useProvideAuth = () => {
     .catch((error) => {
       throw error;
     })
-    console.log(res)
+    if(res?.status == 200) {
+      return axios.get('/api/user').then((res) => {
+        setUser(res.data)
+      }).catch((error) => {
+        if(error.response.status == 401) {
+          setUser('unauthorized')
+        } else if(error.response.status == 403) {
+          setUser('unverified')
+        }
+      })
+    }
     return res;
   }
 
@@ -141,7 +151,7 @@ const useProvideAuth = () => {
         setUser('unverified')
       }
     })
-  }, [saveProfile])
+  }, [])
 
   return {
     user,

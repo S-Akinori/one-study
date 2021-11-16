@@ -15,10 +15,12 @@ interface Props {
   user?: User | null
   id?: number | null
   hasLink?: boolean
+  avatarSize? : 'sm' | 'md' | 'lg' | 'xl'
 }
 
-const UserLabel = ({user = null, id = null, hasLink = true}: Props) => {
+const UserLabel = ({user = null, id = null, hasLink = true, avatarSize = 'md'}: Props) => {
   const [userData, setUserData] = useState(user);
+  const avatarClass = `c-avatar c-avatar--${avatarSize}`
   useEffect(() => {
     if(!userData && id) {
       axios.get(`/api/users/${id}`).then((res) => {
@@ -31,7 +33,7 @@ const UserLabel = ({user = null, id = null, hasLink = true}: Props) => {
       {userData && hasLink && 
         <div className="flex items-center">
           <Link to={`/users/${userData?.id}`}>
-            <img src={userData.photoURL} alt={userData.name} className="avatar" />
+            <img src={userData.photoURL} alt={userData.name} className={avatarClass} />
           </Link>
           <Link to={`/users/${userData?.id}`}>
             <div className="pl-2">{userData.name}</div>
@@ -41,7 +43,7 @@ const UserLabel = ({user = null, id = null, hasLink = true}: Props) => {
       {userData && !hasLink && 
         <div className="flex items-center">
           <div className="w-8 h-8">
-            <img src={userData.photoURL} alt={userData.name} className="avatar" />
+            <img src={userData.photoURL} alt={userData.name} className={avatarClass} />
           </div>
           <div className="pl-2">{userData.name}</div>
         </div>

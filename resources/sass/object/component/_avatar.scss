@@ -1,6 +1,19 @@
+$sizes: (
+  'sm': 45px,
+  'md': 60px,
+  'lg': 75px,
+  'xl': 90px,
+  );
 .c-avatar, .avatar {
   object-fit: cover;
   width: 60px;
   height: 60px;
   border-radius: 50%;
+}
+
+@each $key, $size in $sizes {
+  .c-avatar--#{$key}, .avatar--#{$key} {
+    width: $size;
+    height: $size;
+  }
 }

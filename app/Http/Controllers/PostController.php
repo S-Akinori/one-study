@@ -69,7 +69,7 @@ class PostController extends Controller
     {
         //
         $post = Post::find($id);
-        return ['post' => $post, 'user' => $post->user];
+        return ['post' => $post, 'user' => $post->user, 'comments' => $post->comments];
     }
 
     /**
