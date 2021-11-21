@@ -2,13 +2,14 @@ import axios from "axios";
 import React, {useState, useEffect} from "react";
 import {useParams, Link} from "react-router-dom";
 import {saveAs} from "file-saver";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, Collapse, Button} from "@mui/material";
 import {LoadingButton} from "@mui/lab"
 import DownloadIcon from '@mui/icons-material/Download';
 import { useAuth } from "../../components/AuthContext";
 import UserLabel from "../../components/UserLabel";
 import CreatePostLink from "../../components/CreatePostLink";
 import {User} from "../../interface/User"
+import CommentForm from "../../components/CommentForm";
 
 interface DynamicProps {
   id: string
@@ -46,6 +47,7 @@ const ShowPost = () => {
   const [postdata, setPostdata] = useState<PostData | null>(null)
   const [loading, setLoading] = useState(true)
   const [downloading, setDownloading] = useState(false);
+  const [shown, setShown] = useState(false);
   const {id}: DynamicProps = useParams()
   const auth = useAuth();
   
@@ -74,6 +76,22 @@ const ShowPost = () => {
       });
     }
     setDownloading(false);
+  }
+
+  const toggleCollapse = () => {
+    setShown(!shown);
+  }
+
+  const setNewComment = (comment: Comment) => {
+    if(postdata) {
+      const newPostData : PostData = {
+        post: postdata.post,
+        user: postdata.user,
+        comments: postdata.comments
+      }
+      newPostData.comments.push(comment);
+      setPostdata(newPostData);
+    }
   }
 
   useEffect(() => {
@@ -117,7 +135,14 @@ const ShowPost = () => {
           </div>
           <div className="p-post__footer__comments py-4">
             <h2 className="py-4 text-xl font-bold">コメント</h2>
-            <Link to={`/comments/create/${id}`}>コメントする</Link>
+            {(auth?.user !== 'unverified' && auth?.user !== 'unauthorized') && (
+              <>
+                <Button variant="text" onClick={toggleCollapse}>コメントする</Button>
+                <Collapse in={shown}>
+                  <CommentForm userId={(auth?.user as User).id} postId={id} returnToParent={setNewComment} />
+                </Collapse>
+              </>
+            )}
             {postdata.comments.length > 0 && postdata.comments.map((comment, index) => (
               <div key={comment.id} className="py-4 border-b-2">
                 <UserLabel id={comment.user_id} avatarSize="sm" />
