@@ -54,7 +54,7 @@ const ShowPost = () => {
     if(postdata) {
       const data = await fetch(postdata?.post.fileURL);
       const blob = await data.blob();
-      saveAs(blob);
+      saveAs(blob, postdata.post.title);
 
       const downloadedFiles = ((auth?.user as User).downloadedFiles) ? (auth?.user as User).downloadedFiles : [];
       const existIdInArray = (downloadedFiles.length > 0) ? downloadedFiles.includes(parseInt(id)) : false
