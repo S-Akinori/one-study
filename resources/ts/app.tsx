@@ -10,7 +10,6 @@ import User from './views/user/User'
 import IndexPost from './views/post/IndexPost'
 import CreatePost from './views/post/CreatePost'
 import ShowPost from './views/post/ShowPost'
-import Setting from './views/user/Settings'
 import ProvideAuth, { PrivateRoute, PublicRoute } from './components/AuthContext'
 import SendVerificationMail from './views/auth/SendVerificationMail'
 import Settings from './views/user/Settings'
@@ -23,14 +22,6 @@ import ResetPassword from './views/auth/ResetPassword'
 import CreateComment from './views/comment/CreateComment'
  
 const App = () => {
-    // const [isAuth, setIsAuth] = useState(false)
-    // axios.get('/api/user').then(() => {
-    //   console.log('Authorized')
-    //   setIsAuth(true)
-    // }).catch(() => {
-    //   console.log('Unauthorized')
-    //   setIsAuth(false)
-    // })
     return (
       <ProvideAuth>
         <BrowserRouter>

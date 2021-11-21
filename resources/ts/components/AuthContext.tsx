@@ -18,48 +18,6 @@ interface User {
   updated_at: string | null
   downloadedFiles: number[]
 }
-
-const fakeAuth = {
-  isAuthenticated: true,
-  signin(cb: any) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb: any) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
-
-interface authProps {
-  user: User | 'unauthorized' | 'unverified';
-  register: (registerData: RegisterData) => Promise<void>
-  signin: (loginData: LoginData) => Promise<void>;
-  signinWithProvider: (token: string) => Promise<void>;
-  signout: () => Promise<void>;
-  saveProfile: (formData: FormData | ProfileData) => Promise<void | AxiosResponse<any>>;
-}
-
-const authContext = createContext<authProps | null>(null)
-
-interface Props {
-  children: ReactNode
-}
-
-const ProvideAuth = ({children}: Props) => {
-  const auth = useProvideAuth();
-  return (
-    <authContext.Provider value={auth}>
-      {children}
-    </authContext.Provider>
-  )
-}
-export default ProvideAuth
-
-export const useAuth = () => {
-  return useContext(authContext)
-}
-
 interface LoginData {
   email: string,
   password: string,
@@ -74,6 +32,41 @@ interface ProfileData {
   username?: string,
   avatar?: FileList
   email?: string
+}
+interface authProps {
+  user: User | 'unauthorized' | 'unverified';
+  register: (registerData: RegisterData) => Promise<void>
+  signin: (loginData: LoginData) => Promise<void>;
+  signinWithProvider: (token: string) => Promise<void>;
+  signout: () => Promise<void>;
+  saveProfile: (formData: FormData | ProfileData) => Promise<void | AxiosResponse<any>>;
+}
+interface Props {
+  children: ReactNode
+}
+interface RouteProps {
+  children: ReactNode,
+  path: string,
+  exact?: boolean
+}
+interface From {
+  from: Location
+}
+
+const authContext = createContext<authProps | null>(null)
+
+const ProvideAuth = ({children}: Props) => {
+  const auth = useProvideAuth();
+  return (
+    <authContext.Provider value={auth}>
+      {children}
+    </authContext.Provider>
+  )
+}
+export default ProvideAuth
+
+export const useAuth = () => {
+  return useContext(authContext)
 }
 
 const useProvideAuth = () => {
@@ -163,12 +156,6 @@ const useProvideAuth = () => {
   }
 }
 
-interface RouteProps {
-  children: ReactNode,
-  path: string,
-  exact?: boolean
-}
-
 /**
  * Only authorized users are allowed to access
  * e.g.) user, settings 
@@ -197,9 +184,6 @@ export const PrivateRoute = ({children, path, exact = false}: RouteProps) => {
  * Only unauthorized(unlogged in) users are allowed to access
  * e.g) register, login page
  */
-interface From {
-  from: Location
-}
 export const PublicRoute = ({children, path, exact = false}: RouteProps) => {
   const auth = useAuth()
   const history = useHistory()

@@ -48,17 +48,7 @@ const ShowPost = () => {
   const [downloading, setDownloading] = useState(false);
   const {id}: DynamicProps = useParams()
   const auth = useAuth();
-
-  useEffect(() => {
-    axios.get(`/api/posts/${id}`).then((res) => {
-      console.log(res.data)
-      setPostdata(res.data);
-      setLoading(false)
-    }).catch((error) => {
-      console.log(error.response)
-      setLoading(false)
-    })
-  }, [])
+  
   const download = async () => {
     setDownloading(true);
     if(postdata) {
@@ -66,8 +56,8 @@ const ShowPost = () => {
       const blob = await data.blob();
       saveAs(blob);
 
-      const downloadedFiles = (auth?.user as User).downloadedFiles;
-      const existIdInArray = downloadedFiles.includes(parseInt(id))
+      const downloadedFiles = ((auth?.user as User).downloadedFiles) ? (auth?.user as User).downloadedFiles : [];
+      const existIdInArray = (downloadedFiles.length > 0) ? downloadedFiles.includes(parseInt(id)) : false
 
       if(!existIdInArray) {
         downloadedFiles.push(parseInt(id));
@@ -85,6 +75,16 @@ const ShowPost = () => {
     }
     setDownloading(false);
   }
+
+  useEffect(() => {
+    axios.get(`/api/posts/${id}`).then((res) => {
+      setPostdata(res.data);
+      setLoading(false)
+    }).catch((error) => {
+      console.log(error.response)
+      setLoading(false)
+    })
+  }, [])
   
   return (
     <div className="p-4 relative">
@@ -98,8 +98,9 @@ const ShowPost = () => {
             <img src={postdata.post.fileURL} alt="" onContextMenu={(e) => {e.preventDefault(); return false}} />
           </div>
           <div className="py-4">
-            <LoadingButton loading={downloading} variant="contained" onClick={download}>ダウンロード</LoadingButton>
+            <LoadingButton loading={downloading} variant="contained" onClick={download} disabled={(auth?.user == 'unverified' || auth?.user == 'unauthorized') ? true : false }>ダウンロード</LoadingButton>
             <span><DownloadIcon />{postdata.post.downloadedTotal}</span>
+            {(auth?.user == 'unverified' || auth?.user == 'unauthorized') && <p className="c-error">ダウンロードするにはログインが必要です</p>}
           </div>
         </div>
         <div className="p-post__body py-4">
