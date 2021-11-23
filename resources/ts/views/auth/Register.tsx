@@ -15,7 +15,7 @@ interface EmailAndPasswordData {
 }
 
 const Register = () => {
-  const { register, handleSubmit, setError, formState: { errors } } = useForm();
+  const { register, handleSubmit, clearErrors, setError, formState: { errors } } = useForm();
   const history = useHistory()
   const auth = useAuth()
   const [loading, setLoading] = useState(false);
@@ -39,6 +39,7 @@ const Register = () => {
 
   const socialLogin = (e: React.MouseEvent<HTMLElement>) => {
     setLoading(true)
+    clearErrors()
     const provider = (e.target as HTMLButtonElement).value
     console.log(provider)
     if(provider == 'facebook' || provider == 'twitter') {
@@ -46,8 +47,15 @@ const Register = () => {
         console.log(res);
         window.location.href = res.data.redirect_url;
       })
+    } else {
+      setLoading(false)
+      setError('provider', {
+        type: 'manual',
+        message: 'エラーが発生しました。再度ログインしてください'
+      })
     }
   }
+
 
   return (
     <div className="p-4 max-w-screen-sm mx-auto">
@@ -103,7 +111,8 @@ const Register = () => {
           </div>
         </form>
         <div className="text-center py-4">
-          <LoadingButton loading={loading} onClick={socialLogin} variant="contained"><TwitterIcon/> Twitterでログイン</LoadingButton>
+          <LoadingButton loading={loading} onClick={socialLogin} variant="contained" value="twitter"><TwitterIcon/> Twitterでアカウント作成</LoadingButton>
+          {errors.provider && <span className="block text-red-400">{errors.provider.message}</span>}
         </div>
     </div>
   )
